@@ -39,12 +39,21 @@ public class GirlAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder holder1 = (ViewHolder) holder;
         PhotoGirl photoGirl = girlList.get(position);
         if(photoGirl!=null){
             ImageLoaderUtils.display(mContext,holder1.girlItem,photoGirl.getUrl());
         }
+        //照片条目点击
+        holder1.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mCallBack!=null){
+                    mCallBack.onClick(view,position);
+                }
+            }
+        });
     }
 
     @Override
@@ -66,5 +75,12 @@ public class GirlAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+    private OnCallBack mCallBack;
+    public void setOnItemClickListen(OnCallBack callback){
+        this.mCallBack=callback;
+    }
+    public interface OnCallBack{
+        void onClick(View view,int position);
     }
 }

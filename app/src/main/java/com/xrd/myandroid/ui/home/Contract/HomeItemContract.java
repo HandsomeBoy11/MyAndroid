@@ -16,19 +16,19 @@ import rx.Observable;
 
 public interface HomeItemContract {
 
-    public interface Model extends BaseModel {
+     interface Model extends BaseModel {
         //请求获取新闻
         Observable<List<NewsSummary>> getNewsList(String newsId,String newsType,int page);
 
     }
 
-    public interface View extends BaseView {
+     interface View extends BaseView {
         //返回获取的新闻
         void returnNewsListData(List<NewsSummary> newsSummaries);
         void netError();
     }
 
-    public abstract static class Presenter extends BasePresenter<View, Model> {
+     abstract static class Presenter extends BasePresenter<View, Model> {
         //发起获取新闻请求
         public abstract void getNewsListDataRequest(String type, final String id, int startPage);
     }

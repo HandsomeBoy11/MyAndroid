@@ -1,5 +1,6 @@
 package com.xrd.myandroid.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xrd.myandroid.R;
+import com.xrd.myandroid.ui.girl.activity.PhotoDetailActivity;
 import com.xrd.myandroid.ui.girl.adapter.GirlAdapter;
 import com.xrd.myandroid.ui.girl.bean.PhotoGirl;
 import com.xrd.myandroid.ui.girl.contract.GirlContract;
@@ -71,6 +73,17 @@ public class GirlFragment extends BaseFragment<GirlPresenter,GirlModel> implemen
         rvGirl.setLayoutManager(gridLayoutManager);
         girlAdapter = new GirlAdapter(mContext);
         rvGirl.setAdapter(girlAdapter);
+        //照片条目的点击事件
+        girlAdapter.setOnItemClickListen(new GirlAdapter.OnCallBack() {
+            @Override
+            public void onClick(View view, int position) {
+                String url = mList.get(position).getUrl();
+                /*Intent intent = new Intent(mContext, PhotoDetailActivity.class);
+                intent.putExtra("url",mList.get(position).getUrl());
+                startActivity(intent);*/
+                PhotoDetailActivity.startAct(mContext,view,url);
+            }
+        });
         //添加分割线
         SpaceItemDecoration itemDecoration = new SpaceItemDecoration(mContext,6,2,6,2,0,R.color.transparent);
         rvGirl.addItemDecoration(itemDecoration);

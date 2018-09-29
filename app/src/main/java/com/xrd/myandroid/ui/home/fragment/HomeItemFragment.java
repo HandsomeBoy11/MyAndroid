@@ -1,5 +1,6 @@
 package com.xrd.myandroid.ui.home.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xrd.myandroid.R;
 import com.xrd.myandroid.app.AppConstant;
 import com.xrd.myandroid.ui.home.Contract.HomeItemContract;
+import com.xrd.myandroid.ui.home.activity.NewsDetailActivity;
 import com.xrd.myandroid.ui.home.adapter.HomeSubAdapter;
 import com.xrd.myandroid.ui.home.bean.NewsSummary;
 import com.xrd.myandroid.ui.home.model.HomeItemModel;
@@ -66,18 +68,27 @@ public class HomeItemFragment extends BaseFragment<HomeItemPresenter, HomeItemMo
     protected void initView() {
         refreshLayout.setRefreshHeader(new ClassicsHeader(mContext));
         refreshLayout.setRefreshFooter(new ClassicsFooter(mContext));
+        refreshLayout.setEnableLoadMore(false);
         rvHome.setLayoutManager(new LinearLayoutManager(mContext));
         homeSubAdapter = new HomeSubAdapter(mContext);
         rvHome.setAdapter(homeSubAdapter);
         if (itemDecoration != null) {
             rvHome.removeItemDecoration(itemDecoration);
         } else {
-            itemDecoration = new SpaceItemDecoration(mContext,8,5,8,5,
+            itemDecoration = new SpaceItemDecoration(mContext,8,13,8,13,
                     1,R.color.alpha_25_black);
         }
         rvHome.addItemDecoration(itemDecoration);
+        homeSubAdapter.setOnItemClickListener(new HomeSubAdapter.OnCallBack() {
+            @Override
+            public void onClick(View view, View imageView,int position) {
+                NewsSummary newsSummary = mList.get(position);
+                NewsDetailActivity.startAct(mContext,imageView,newsSummary.getPostid(),newsSummary.getImgsrc());
 
+            }
+        });
     }
+
 
     @Override
     protected void initData() {
@@ -122,8 +133,7 @@ public class HomeItemFragment extends BaseFragment<HomeItemPresenter, HomeItemMo
     @Override
     public void showErrorTip(String msg) {
         stopProgressDialog();
-
-
+        startPage-=20;
     }
 
     /**
@@ -147,8 +157,10 @@ public class HomeItemFragment extends BaseFragment<HomeItemPresenter, HomeItemMo
         if (mList.size() > 0) {
             tvNoData.setVisibility(View.GONE);
             homeSubAdapter.setData(mList);
+            refreshLayout.setEnableLoadMore(true);
         } else {
             tvNoData.setVisibility(View.VISIBLE);
+            refreshLayout.setEnableLoadMore(false);
         }
     }
 
@@ -163,6 +175,6 @@ public class HomeItemFragment extends BaseFragment<HomeItemPresenter, HomeItemMo
 
     @OnClick(R.id.tv_no_data)
     public void onViewClicked() {
-        mPresenter.getNewsListDataRequest(newsType,newsId,startPage);
+        refreshLayout.autoRefresh();
     }
 }

@@ -15,16 +15,16 @@ import rx.Observable;
 
 public interface HomeContract {
 
-    public interface Model extends BaseModel {
+     interface Model extends BaseModel {
         Observable<List<NewsChannelTable>> lodeMineNewsChannels();
 
     }
 
-    public interface View extends BaseView {
+     interface View extends BaseView {
         void returnMineNewsChannels(List<NewsChannelTable> newsChannelsMine);
     }
 
-    public abstract static class Presenter extends BasePresenter<View, Model> {
+     abstract static class Presenter extends BasePresenter<View, Model> {
         public abstract void lodeMineChannelsRequest();
     }
 

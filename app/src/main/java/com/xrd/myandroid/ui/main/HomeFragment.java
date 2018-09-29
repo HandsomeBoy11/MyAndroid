@@ -121,5 +121,6 @@ public class HomeFragment extends BaseFragment<HomePresenter,HomeModel> implemen
         }
         vpHome.setOffscreenPageLimit(fragments.size());
         homeVpAdapter.setFragmentsAndTitle(fragments,titles);
+        vpHome.setCurrentItem(0);
     }
 }

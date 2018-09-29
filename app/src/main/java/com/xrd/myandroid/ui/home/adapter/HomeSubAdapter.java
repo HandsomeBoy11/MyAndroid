@@ -39,13 +39,21 @@ public class HomeSubAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder holder1 = (ViewHolder) holder;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final ViewHolder holder1 = (ViewHolder) holder;
         NewsSummary newsSummary = mList.get(position);
-        ImageLoaderUtils.display(mContext,holder1.ivSubItem,newsSummary.getImgsrc());
+        ImageLoaderUtils.displayRound(mContext,holder1.ivSubItem,newsSummary.getImgsrc());
         holder1.tvTitle.setText(newsSummary.getTitle());
         holder1.tvDes.setText(newsSummary.getDigest());
         holder1.tvTiem.setText(newsSummary.getPtime());
+        holder1.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mCallBack!=null){
+                    mCallBack.onClick(view,holder1.ivSubItem,position);
+                }
+            }
+        });
     }
 
     @Override
@@ -73,5 +81,12 @@ public class HomeSubAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+    private OnCallBack mCallBack;
+    public void setOnItemClickListener(OnCallBack callBack){
+        this.mCallBack=callBack;
+    }
+    public interface OnCallBack{
+        void onClick(View view,View imageView,int position);
     }
 }

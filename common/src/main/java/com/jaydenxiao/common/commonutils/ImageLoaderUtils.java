@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.jaydenxiao.common.R;
 
 import java.io.File;
@@ -85,17 +86,45 @@ public class ImageLoaderUtils {
         }
         Glide.with(context).load(url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.toux2)
-                .centerCrop().transform(new GlideRoundTransformUtil(context)).into(imageView);
+                .transform(new CenterCrop(context),new GlideRoundTranform(context))//看centerCrop()方法的源码可知,
+                // 也是需要调用transform()方法的.所以前后共用CenterCrop会覆盖掉GlideRoundImage的效果,解决办法：在transform中new CenterCrop(context)
+                .placeholder(R.drawable.ic_image_loading)
+                .error(R.drawable.ic_empty_picture)
+                .crossFade()
+                .into(imageView);
     }
-    public static void displayRound(Context context,ImageView imageView, int resId) {
+    public static void displayRound(Context context,ImageView imageView, String url,int dp) {
+        if (imageView == null) {
+            throw new IllegalArgumentException("argument error");
+        }
+        Glide.with(context).load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transform(new CenterCrop(context),new GlideRoundTranform(context,dp))//看centerCrop()方法的源码可知,
+                // 也是需要调用transform()方法的.所以前后共用CenterCrop会覆盖掉GlideRoundImage的效果,解决办法：在transform中new CenterCrop(context)
+                .placeholder(R.drawable.ic_image_loading)
+                .error(R.drawable.ic_empty_picture)
+                .crossFade()
+                .into(imageView);
+    }
+    public static void displayCircle(Context context,ImageView imageView, String url) {
+        if (imageView == null) {
+            throw new IllegalArgumentException("argument error");
+        }
+        Glide.with(context).load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_image_loading)
+                .error(R.drawable.toux2)
+                .centerCrop().transform(new GlideCircleTransfromUtil(context)).into(imageView);
+    }
+    public static void displayCircle(Context context,ImageView imageView, int resId) {
         if (imageView == null) {
             throw new IllegalArgumentException("argument error");
         }
         Glide.with(context).load(resId)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.toux2)
-                .centerCrop().transform(new GlideRoundTransformUtil(context)).into(imageView);
+                .centerCrop().transform(new GlideCircleTransfromUtil(context)).into(imageView);
     }
 
 }

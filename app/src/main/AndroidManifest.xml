@@ -17,13 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.main.MainActivity">
+
+        </activity>
+        <activity android:name=".ui.home.activity.NewsChannelActivity" />
+        <activity android:name=".ui.girl.activity.PhotoDetailActivity" />
+        <activity android:name=".ui.home.activity.NewsDetailActivity" />
+        <activity android:name=".ui.login.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.home.activity.NewsChannelActivity"></activity>
+        <activity android:name=".ui.login.AdavaceActivity"></activity>
     </application>
 
 </manifest>

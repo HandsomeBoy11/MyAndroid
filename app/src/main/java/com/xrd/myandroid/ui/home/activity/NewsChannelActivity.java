@@ -16,6 +16,7 @@ import com.xrd.myandroid.ui.home.bean.NewsChannelTable;
 import com.xrd.myandroid.ui.home.model.HomeChannelModel;
 import com.xrd.myandroid.ui.home.presenter.HomeChannelPresenter;
 import com.xrd.myandroid.ui.home.utils.ItemDragHelperCallback;
+import com.xrd.myandroid.weight.MyGridLayoutManager;
 import com.xrd.myandroid.weight.TitleBar;
 
 import java.util.ArrayList;
@@ -51,8 +52,10 @@ public class NewsChannelActivity extends BaseActivity<HomeChannelPresenter,HomeC
     public void initView() {
         pindaoTitle.setTitle("频道管理");
         pindaoTitle.setBack(true);
-        final GridLayoutManager mineManager = new GridLayoutManager(this, 4);
-        GridLayoutManager moreManager = new GridLayoutManager(this, 4);
+        final MyGridLayoutManager mineManager = new MyGridLayoutManager(this, 4);
+        MyGridLayoutManager moreManager = new MyGridLayoutManager(this, 4);
+        mineManager.setCanScroll(false);
+        moreManager.setCanScroll(false);
         rvMine.setLayoutManager(mineManager);
         rvMore.setLayoutManager(moreManager);
         mineAdapter = new PinDaoAdapter(this, false);
